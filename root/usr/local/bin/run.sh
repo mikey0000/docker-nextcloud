@@ -30,7 +30,7 @@ if [ ! -d /data/session ]; then
 fi
 
 echo "Updating permissions..."
-for dir in /nextcloud /data /config /apps2 /etc/nginx /etc/php7 /var/log /var/lib/nginx /tmp /etc/s6.d; do
+for dir in /opt/nextcloud /data /config /apps2 /etc/nginx /var/log /var/lib/nginx /tmp /etc/s6.d; do
   if $(find $dir ! -user $UID -o ! -group $GID|egrep '.' -q); then
     echo "Updating permissions in $dir..."
     chown -R $UID:$GID $dir
