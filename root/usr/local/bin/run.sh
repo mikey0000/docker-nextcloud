@@ -9,27 +9,6 @@ term_handler() {
   exit 143; # 128 + 15 -- SIGTERM
 }
 
-# # Migration stuff
-# if [ -d /data/apps ]; then
-#   echo "Migrate apps... (This will take some time...)"
-
-#   for DIR in $(find /data/apps ! -path /data/apps -type d -maxdepth 1); do
-#     DIR=${DIR##*/}
-
-#     # Delete apps that are delivered with Nextcloud
-#     if [ -d /opt/nextcloud/apps/$DIR ]; then
-#       rm -rf /data/apps/$DIR
-#     fi
-#   done
-
-#   if [ -d /data/userapps ]; then
-#     mv /data/apps/* /data/userapps/
-#     rm -rf /data/apps
-#   else
-#     mv /data/apps /data/userapps
-#   fi
-# fi
-
 # Bootstrap application
 echo "Preparing environment... (This will take some time...)"
 
@@ -51,10 +30,10 @@ if [ ! -d /data/session ]; then
 fi
 
 echo "Updating permissions..."
-for dir in /opt/nextcloud /data /config /apps2 /etc/nginx /var/log /var/lib/nginx /tmp /etc/s6.d; do
-  if $(find $dir ! -user nextcloud -o ! -group nextcloud|egrep '.' -q); then
+for dir in /nextcloud /data /config /apps2 /etc/nginx /etc/php7 /var/log /var/lib/nginx /tmp /etc/s6.d; do
+  if $(find $dir ! -user $UID -o ! -group $GID|egrep '.' -q); then
     echo "Updating permissions in $dir..."
-    chown -R nextcloud:nextcloud $dir
+    chown -R $UID:$GID $dir
   else
     echo "Permissions in $dir are correct."
   fi
