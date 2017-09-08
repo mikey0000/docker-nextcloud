@@ -1,6 +1,6 @@
 <?php
 $CONFIG = array(
-  'datadirectory' => '/data/data',
+  'datadirectory' => '/data',
   'tempdirectory' => '/data/tmp',
   'supportedDatabases' => array(
     'sqlite',
@@ -15,8 +15,8 @@ $CONFIG = array(
       'writable' => false,
     ),
     array(
-      'path'=> '/data/userapps',
-      'url' => '/userapps',
+      'path'=> '/apps2',
+      'url' => '/apps2',
       'writable' => true,
     ),
   ),
