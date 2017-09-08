@@ -40,24 +40,27 @@ fi
 cp -f /opt/nextcloud/config/config.sample.php /data/config/
 cp -f /opt/nextcloud/config/docker.config.php /data/config/
 
-if [ ! -d /data/data ]; then
-  mkdir /data/data
+
+# Put the configuration and apps into volumes
+ln -sf /config/config.php /opt/nextcloud/config/config.php &>/dev/null
+ln -sf /apps2 /opt/nextcloud &>/dev/null
+
+# Create folder for php sessions if not exists
+if [ ! -d /data/session ]; then
+  mkdir -p /data/session;
 fi
 
-if [ ! -d /data/tmp ]; then
-  mkdir /data/tmp
-fi
+echo "Updating permissions..."
+for dir in /nextcloud /data /config /apps2 /etc/nginx /etc/php7 /var/log /var/lib/nginx /tmp /etc/s6.d; do
+  if $(find $dir ! -user $UID -o ! -group $GID|egrep '.' -q); then
+    echo "Updating permissions in $dir..."
+    chown -R $UID:$GID $dir
+  else
+    echo "Permissions in $dir are correct."
+  fi
+done
+echo "Done updating permissions."
 
-if [ ! -d /data/userapps ]; then
-  mkdir /data/userapps
-fi
-
-rm -rf /opt/nextcloud/data /opt/nextcloud/config
-ln -s /data/data /opt/nextcloud/
-ln -s /data/config /opt/nextcloud/
-ln -s /data/userapps /opt/nextcloud/
-
-chown -R nextcloud:nextcloud /data /opt/nextcloud/config
 
 # run application
 echo "Starting supervisord..."
