@@ -41,9 +41,9 @@ RUN set -ex \
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
   && docker-php-ext-configure ldap \
   && docker-php-ext-install gd exif intl mbstring mcrypt ldap mysqli opcache pdo_mysql pdo_pgsql pgsql zip \
-  && pecl install APCu-5.1.8 \
-  && pecl install memcached-3.0.2 \
-  && pecl install redis-3.1.1 \
+  && pecl install APCu-5.1.9 \
+  && pecl install memcached-3.0.4 \
+  && pecl install redis-3.1.6 \
   && docker-php-ext-enable apcu redis memcached \
 
 # Remove dev packages
