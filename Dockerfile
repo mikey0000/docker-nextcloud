@@ -95,10 +95,11 @@ COPY root /
 
 RUN chmod +x /usr/local/bin/run.sh /usr/local/bin/occ /etc/periodic/15min/nextcloud
 
+RUN chown -R nextcloud:nextcloud /data /config /apps2
+
 VOLUME /data /config /apps2
 
 EXPOSE 80
 
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/usr/local/bin/run.sh"]
-USER nextcloud
