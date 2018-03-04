@@ -95,7 +95,7 @@ COPY root /
 
 RUN chmod +x /usr/local/bin/run.sh /usr/local/bin/occ /etc/periodic/15min/nextcloud
 
-RUN chown -R nextcloud:nextcloud /data /config /apps2
+RUN mkdir /data /config /apps2 && chown -R nextcloud:nextcloud /data /config /apps2
 
 VOLUME /data /config /apps2
 
