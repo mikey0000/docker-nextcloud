@@ -41,7 +41,8 @@ RUN set -ex \
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
   && docker-php-ext-configure ldap \
   && pecl install mcrypt-1.0.1 \
-  && docker-php-ext-install gd exif intl mbstring mcrypt ldap mysqli opcache pdo_mysql pdo_pgsql pgsql zip \
+  && docker-php-ext-enable mcrypt \
+  && docker-php-ext-install gd exif intl mbstring ldap mysqli opcache pdo_mysql pdo_pgsql pgsql zip \
   && pecl install APCu-5.1.9 \
   && pecl install memcached-3.0.4 \
   && pecl install redis-3.1.6 \
