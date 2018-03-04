@@ -95,6 +95,8 @@ COPY root /
 
 RUN chmod +x /usr/local/bin/run.sh /usr/local/bin/occ /etc/periodic/15min/nextcloud
 
+RUN chown 1501:1501 /data /config /apps2
+
 VOLUME /data /config /apps2
 
 EXPOSE 80
