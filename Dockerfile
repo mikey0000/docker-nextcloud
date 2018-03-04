@@ -40,6 +40,7 @@ RUN set -ex \
 # https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
   && docker-php-ext-configure ldap \
+  && pecl install mcrypt-1.0.1 \
   && docker-php-ext-install gd exif intl mbstring mcrypt ldap mysqli opcache pdo_mysql pdo_pgsql pgsql zip \
   && pecl install APCu-5.1.9 \
   && pecl install memcached-3.0.4 \
