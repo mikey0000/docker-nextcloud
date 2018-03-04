@@ -3,7 +3,7 @@ version: '2'
 services:
   db:
     restart: always
-    image: mariadb:10.1
+    image: mariadb:10.3.5
     mem_limit: 256M
     volumes:
       - NEXTCLOUD_MARIADB:/var/lib/mysql
