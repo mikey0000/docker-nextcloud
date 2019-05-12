@@ -1,19 +1,25 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.3-fpm-alpine
 MAINTAINER Simon Erhardt <hello@rootlogin.ch>
 
 ARG NEXTCLOUD_GPG="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
-ARG NEXTCLOUD_VERSION=14.0.10
+ARG NEXTCLOUD_VERSION=15.0.7
 ARG UID=1501
 ARG GID=1501
 
 RUN set -ex \
-  && apk add --update \
+  && apk update \
+  && apk upgrade \
+  && apk add \
   alpine-sdk \
   autoconf \
   bash \
+  freetype \
+  freetype-dev \
   gnupg \
   icu-dev \
   icu-libs \
+  imagemagick \
+  imagemagick-dev \
   libjpeg-turbo \
   libjpeg-turbo-dev \
   libldap \
@@ -23,6 +29,8 @@ RUN set -ex \
   libmemcached-dev \
   libpng \
   libpng-dev \
+  libzip \
+  libzip-dev \
   nginx \
   openldap-dev \
   openssl \
@@ -30,6 +38,7 @@ RUN set -ex \
   pcre-dev \
   postgresql-dev \
   postgresql-libs \
+  samba-client \
   sudo \
   supervisor \
   tar \
@@ -40,28 +49,32 @@ RUN set -ex \
 # https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html
   && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
   && docker-php-ext-configure ldap \
-  && pecl install mcrypt-1.0.1 \
+  && docker-php-ext-configure zip --with-libzip=/usr \
+  && pecl install mcrypt-1.0.2 \
   && docker-php-ext-enable mcrypt \
-  && docker-php-ext-install gd exif intl mbstring ldap mysqli opcache pdo_mysql pdo_pgsql pgsql zip \
-  && pecl install APCu-5.1.9 \
-  && pecl install memcached-3.0.4 \
-  && pecl install redis-3.1.6 \
-  && docker-php-ext-enable apcu redis memcached \
+  && docker-php-ext-install gd exif intl mbstring ldap mysqli opcache pcntl pdo_mysql pdo_pgsql pgsql zip \
+  && pecl install APCu-5.1.16 \
+  && pecl install imagick-3.4.3 \
+  && pecl install memcached-3.1.3 \
+  && pecl install redis-4.2.0 \
+  && docker-php-ext-enable apcu imagick redis memcached \
 
 # Remove dev packages
   && apk del \
     alpine-sdk \
     autoconf \
+    freetype-dev \
     icu-dev \
+    imagemagick-dev \
     libmcrypt-dev \
     libmemcached-dev \
     libjpeg-turbo-dev \
     libpng-dev \
+    libzip-dev \
     openldap-dev \
     pcre-dev \
     postgresql-dev \
   && rm -rf /var/cache/apk/* \
-
   # Add user for nextcloud
   && addgroup -g ${GID} nextcloud \
   && adduser -u ${UID} -h /opt/nextcloud -H -G nextcloud -s /sbin/nologin -D nextcloud \
@@ -89,7 +102,9 @@ RUN set -ex \
   && tar xjf ${NEXTCLOUD_TARBALL} --strip-components=1 -C /opt/nextcloud \
 # Remove nextcloud updater for safety
   && rm -rf /opt/nextcloud/updater \
-  && rm -rf /tmp/* /root/.gnupg
+  && rm -rf /tmp/* /root/.gnupg \
+# Wipe excess directories
+  && rm -rf /var/www/*
 
 COPY root /
 
