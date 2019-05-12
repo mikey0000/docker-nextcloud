@@ -58,6 +58,7 @@ RUN set -ex \
   tar \
   tini \
   wget \
+  redis \
 # PHP Extensions
 # https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html
   && docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr \
