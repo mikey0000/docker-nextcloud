@@ -45,6 +45,7 @@ RUN set -ex \
   tini \
   wget \
   redis \
+  redis-openrc \
 
 # PHP Extensions
 # https://docs.nextcloud.com/server/9/admin_manual/installation/source_installation.html
