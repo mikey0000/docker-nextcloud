@@ -1,5 +1,6 @@
 <?php
 $CONFIG = array(
+  'log_type' => 'errorlog',
   'datadirectory' => '/data',
   'tempdirectory' => '/data/tmp',
   'supportedDatabases' => array(
@@ -16,7 +17,7 @@ $CONFIG = array(
     ),
     array(
       'path'=> '/apps2',
-      'url' => '/apps2',
+      'url' => '/userapps',
       'writable' => true,
     ),
   ),
